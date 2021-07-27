@@ -1,0 +1,174 @@
+PARSER_BEGIN(ParserPolinomios)
+
+public class ParserPolinomios {
+	
+	public static void main (String args[]) throws ParseException {
+		ParserPolinomios parser = new ParserPolinomios(System.in);
+		parser.parse();
+	}
+
+}
+
+PARSER_END(ParserPolinomios)
+
+public void parse() :
+{}
+{
+	(Wp())+ <EOF>
+	
+}
+
+
+public void Wp() :
+{
+	int res;
+}
+{
+	res = W() 
+	{
+		System.out.println("EL RESULTADO ES: "+res);
+	}
+}
+
+public int W() : 
+{ 
+	Token numero;
+	int valx;
+	int val;
+}
+{
+	<VAR> 
+	<IGUAL> 
+	numero=<NUMERO> 
+	{
+		valx = Integer.valueOf(numero.image);
+	}
+	<PYC> 
+	val = P(valx)
+	
+	{
+		return val;
+	}
+}
+
+
+public int P(int valx) :
+{
+	String signo;
+	int valPp;
+	int valT;
+}
+{
+	(
+		signo = S() 
+		valT = T(valx)
+		valPp = Pp(valx) 
+		
+		
+		{
+			if(signo.equals("-")){
+				return -valT + valPp;
+			}else{
+				return valT + valPp;
+			}
+		}
+		
+	)
+	|
+	
+	(
+		valT = T(valx)
+		valPp = Pp(valx)
+		{
+			return valT + valPp;
+		}
+	)
+	
+}
+
+public int Pp(int valx) :
+{
+	String signo;
+	int valPp;
+	int valT;
+}
+{
+	(
+		signo = S() 
+		valT = T(valx)
+		valPp = Pp(valx)
+		{
+			if(signo.equals("-")){
+				return -valT + valPp;
+			}else{
+				return valT + valPp;
+			}
+		}
+	)
+	|
+	{
+		return 0;
+	}
+}
+
+
+
+
+public String S() :
+{
+	Token signo;
+}
+{
+	(
+	signo = <MAS> 
+	|
+	signo = <MENOS>
+	)
+	{ 
+		return signo.image; 
+	}
+}
+
+public int T(int valx) :
+{
+	Token numero1;
+	Token numero2;
+	int num1;
+	int num2;
+}
+{
+	numero1 = <NUMERO> 
+	<VAR> 
+	numero2 = <NUMERO>
+	
+	{
+		num1 = Integer.valueOf(numero1.image);
+		num2 = Integer.valueOf(numero2.image);
+		
+		return num1 * ( (int)Math.pow(valx, num2) );
+	}
+}
+
+TOKEN :
+{
+	< VAR: "X" >
+	|
+	< IGUAL: "=" >
+	|
+	< NUMERO: (["0"-"9"])+ >
+	|
+	< PYC: ";" >
+	|
+	< MAS: "+" >
+	|
+	< MENOS: "-" >
+	
+}
+
+
+SKIP :
+{
+	" " | "\n" | "\r" | "\t"
+}
+
+
