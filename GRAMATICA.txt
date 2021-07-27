@@ -1,0 +1,103 @@
+J  ->  W'
+
+J  ->  W' J
+
+W' ->    W       Print(W.val);
+
+
+W ->    X 
+        = 
+        N 
+        ;       P.valx = N.val 
+        P       W.val = P.val
+
+
+P ->            P1. valx = P. valx
+        P1    
+        S       T.valx = P.valx
+        T       if(S.val == "-"){
+                    P.val = P1.val - T.val
+                }else{
+                    P.val = P1.val + T.val
+                }
+        
+        
+P ->    S       T.valx = P.valx
+        T       if(S.val == "-"){
+                    P.val = -T.val
+                }else{
+                    P.val = T.val
+                }
+
+
+P ->            T.valx = P.valx
+        T       P.val = T.val
+
+
+T ->    N1 
+        X 
+        N2      T.val = N1.val * (T.valx ^ N2.val) 
+
+
+S -> +          S.val = "+"
+S -> -          S.val = "-"
+
+N -> NUMERO     N.val = NUMERO.val
+
+
+
+
+
+
+QUITANDO RECURSIVIDAD >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+
+J  ->  W'
+
+J  ->  W' J
+
+W' ->    W       Print(W.val);
+
+
+W ->    X 
+        = 
+        N 
+        ;       P.valx = N.val 
+        P       W.val = P.val
+
+        
+P ->    S       T.valx = P.valx
+        T       P'.valx = P.valx
+        P'      if(S.val == "-"){
+                    P.val = -T.val + P'.val
+                }else{
+                    P.val = T.val + P'.val
+                }
+
+P ->            T.valx = P.valx
+        T       P'.valx = P.valx
+        P'      P.val = T.val + P'.val
+
+P' ->   S       T.valx = P'.valx      
+        T       
+        P'      if(S.val == "-"){
+                    P'.val = -T.val + P'1.val
+                }else{
+                    P'.val = T.val + P'1.val
+                }
+
+P' ->   LAMBDA      P'.val = 0
+
+
+
+T ->    N1 
+        X 
+        N2      T.val = N1.val * (T.valx ^ N2.val) 
+
+
+S -> +          S.val = "+"
+S -> -          S.val = "-"
+
+N -> NUMERO     N.val = NUMERO.val
+
+
